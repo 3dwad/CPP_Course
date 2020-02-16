@@ -16,7 +16,7 @@ public:
 	AFloater();
 
 
-	UPROPERTY(VisibleAnywhere, Category = "ActorMeshComponents") //Reflection macros with params
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite,Category = "ActorMeshComponents") //Reflection macros with params
 	UStaticMeshComponent* cppStaticMesh; // Declaration pointer to UStaticMeshComponent
 
 	// Locationused by SetActorLocation() when BeginPlay() is called
@@ -26,6 +26,17 @@ public:
 	// Location of Actor when dragged in from editor
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadWrite, Category = "Floater Variables")
 	FVector placedLocation;
+
+	// 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Floater Variables")
+	FVector worldOrigin;
+
+	//
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Floater Variables")
+	FVector initialDirection;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Floater Variables")
+	bool bShouldFloat;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Floater Variables")
 	bool bInitializeFloaterLocations;
