@@ -35,6 +35,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Floater Variables")
 	FVector initialDirection;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floater Variables")
+	FVector initialForce;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floater Variables")
+	FVector initialTorque;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Floater Variables")
 	bool bShouldFloat;
 

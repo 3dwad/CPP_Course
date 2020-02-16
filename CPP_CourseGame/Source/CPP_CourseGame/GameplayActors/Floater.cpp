@@ -2,6 +2,7 @@
 
 
 #include "Floater.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 AFloater::AFloater()
@@ -13,7 +14,9 @@ AFloater::AFloater()
 	placedLocation = FVector(0.0f, 0.0f, 0.0f);
 	worldOrigin = FVector(0.0f, 0.0f, 0.0f);
 	initialDirection = FVector(0.0f, 0.0f, 0.0f);
-
+	initialForce = FVector(0.0f);
+	initialTorque = FVector(0.0f);
+	
 	bInitializeFloaterLocations = false;
 	bShouldFloat = false;
 
@@ -27,6 +30,10 @@ void AFloater::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	
+	cppStaticMesh->AddForce(initialForce);
+	cppStaticMesh->AddTorque(initialTorque);
+	/**
 	placedLocation = GetActorLocation();
 
 	if (bInitializeFloaterLocations)
@@ -34,13 +41,22 @@ void AFloater::BeginPlay()
 		SetActorLocation(initialLocation);
 	}
 	
+	FRotator localRotate = FRotator(25.f, 0.0f, 0.0f);
+	AddActorLocalRotation(localRotate);
+
+	FHitResult hitResult;
+	FVector localOffset = FVector(200.f, 0.0f, 0.0f);
+	AddActorLocalOffset(localOffset, true, &hitResult);
+*/
 }
 
 // Called every frame
 void AFloater::Tick(float DeltaTime)
+
 {
 	Super::Tick(DeltaTime);
 
+	/**
 	if (bShouldFloat)
 	{
 		FHitResult hitResult;
@@ -48,6 +64,7 @@ void AFloater::Tick(float DeltaTime)
 
 		FVector hitLocation = hitResult.Location;
 
+		
 		if (hitResult.bBlockingHit)
 		{
 
@@ -55,7 +72,7 @@ void AFloater::Tick(float DeltaTime)
 		}
 
 		
-	}
+	}*/
 }
 
 
