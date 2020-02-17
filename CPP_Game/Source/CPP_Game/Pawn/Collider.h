@@ -34,16 +34,9 @@ public:
 
 
 	// Getters ans Setters
-	UFUNCTION(BlueprintCallable, Category = "Getters")
+	
 	FORCEINLINE UStaticMeshComponent* GetMeshComponent() {return meshComponent;}
-
-	UFUNCTION(BlueprintCallable, Category = "Setters")
 	FORCEINLINE void SetMeshComponent(UStaticMeshComponent* Mesh) {meshComponent = Mesh;}
-
-
-	UFUNCTION(BlueprintCallable, Category = "Getters")
 	FORCEINLINE USphereComponent* GetSphereComponent() { return sphereComponent; }
-
-	UFUNCTION(BlueprintCallable, Category = "Setters")
 	FORCEINLINE void SetSphereComponent(USphereComponent* Sphere) { sphereComponent = Sphere; }
 };
