@@ -19,6 +19,8 @@ public:
 	class UStaticMeshComponent* MainMesh;
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* MainCamera;
+	UPROPERTY(EditAnywhere, Category = "PawnMovement")
+	float maxSpeeed;
 	
 
 
@@ -32,5 +34,14 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:
+
+	void MoveForwaard(float Value);
+	void MoveRight(float Value);
+
+	FVector currentVelocity;
+
+	
 
 };
