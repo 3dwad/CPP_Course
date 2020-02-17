@@ -14,7 +14,7 @@ class CPP_COURSEGAME_API AFloater : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AFloater();
-
+	   	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite,Category = "ActorMeshComponents") //Reflection macros with params
 	UStaticMeshComponent* cppStaticMesh; // Declaration pointer to UStaticMeshComponent
@@ -46,6 +46,15 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Floater Variables")
 	bool bInitializeFloaterLocations;
+
+private:
+
+	float runningTime;
+	UPROPERTY(EditAnywhere, Category = "Floater Variables | Wave Parameters")
+	float amplitude;
+	UPROPERTY(EditAnywhere, Category = "Floater Variables | Wave Parameters")
+	float timeStrech;
+
 
 protected:
 	// Called when the game starts or when spawned
