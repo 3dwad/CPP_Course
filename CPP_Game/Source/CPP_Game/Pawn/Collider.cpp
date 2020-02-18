@@ -4,7 +4,12 @@
 #include "Collider.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
-#include "UObject/ConstructorHelpers.h"
+// #include "UObject/ConstructorHelpers.h"
+#include "GameFramework/FloatingPawnMovement.h"
+#include "Components/InputComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+
 
 // Sets default values
 ACollider::ACollider()
@@ -23,6 +28,25 @@ ACollider::ACollider()
 	meshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	meshComponent->SetupAttachment(GetRootComponent());
 
+	floatingMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+
+	mainSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
+	mainSpringArm->SetupAttachment(GetRootComponent());
+	mainSpringArm->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
+	mainSpringArm->TargetArmLength = 400.f;
+	mainSpringArm->bEnableCameraLag = true;
+	mainSpringArm->CameraLagSpeed = 3.0f;
+
+	
+	mainCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	mainCamera->SetupAttachment(mainSpringArm, USpringArmComponent::SocketName);
+	
+	
+
+
+
+	/* Hard coding to push StaticMesh.
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshComponentAsset(TEXT("StaticMesh'/Game/InfinityBladeAdversaries/Enemy/Enemy_Gruntling_Weapons/Meshes/SM_Gruntling_BombDrop_Internal.SM_Gruntling_BombDrop_Internal'"));
 	 if (MeshComponentAsset.Succeeded())
 	 {
@@ -30,7 +54,7 @@ ACollider::ACollider()
 		 meshComponent->SetRelativeLocation(FVector(0.f,0.f,-5.f));
 		 meshComponent->SetWorldScale3D(FVector(1.2f));
 	 }
-
+	 */
 
 }
 
@@ -53,5 +77,28 @@ void ACollider::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	// BindAxis 
+
+	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ACollider::MoveForward);
+	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ACollider::MoveRight);
+
 }
+
+// Get Actor vectors, multiply to value from input and add movement input
+
+void ACollider::MoveForward(float axisValue)
+{
+	FVector forwardActorVector = GetActorForwardVector();
+
+	AddMovementInput(axisValue * forwardActorVector);
+
+}
+
+void ACollider::MoveRight(float axisValue)
+{
+	FVector rightActorVector = GetActorRightVector();
+
+	AddMovementInput(axisValue * rightActorVector);
+}
+
 
