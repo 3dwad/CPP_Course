@@ -35,8 +35,14 @@ public:
 	class USphereComponent* sphereComponent;
 
 	// Declaration Floating Pawn Movement Component
+	/*
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	class UFloatingPawnMovement* floatingMovementComponent;
+	*/
+
+	// Declaration custom movement component
+	UPROPERTY(VisibleAnywhere, Category = "Movement")
+	class UColliderMovementComponent* mainMovementComponent;
 
 	// Declaration Camera component
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
@@ -59,6 +65,9 @@ public:
 	FORCEINLINE void SetCameraComponent(UCameraComponent* camera) { mainCamera = camera; }
 	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return mainSpringArm; }
 	FORCEINLINE void SetSpringArmComponent(USpringArmComponent* springArm) { mainSpringArm = springArm; }
+
+	// Prototype override function from pawn
+	virtual UPawnMovementComponent* GetMovementComponent() const override;
 
 private:
 	void MoveForward(float axisValue);

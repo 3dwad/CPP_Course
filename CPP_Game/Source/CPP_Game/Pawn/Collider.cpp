@@ -9,6 +9,7 @@
 #include "Components/InputComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "ColliderMovementComponent.h"
 
 
 // Sets default values
@@ -28,8 +29,11 @@ ACollider::ACollider()
 	meshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	meshComponent->SetupAttachment(GetRootComponent());
 
-	floatingMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+	// floatingMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 
+	mainMovementComponent = CreateDefaultSubobject<UColliderMovementComponent>(TEXT("Movement"));
+	mainMovementComponent->UpdatedComponent = RootComponent;
+	
 	mainSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
 	mainSpringArm->SetupAttachment(GetRootComponent());
 	mainSpringArm->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
@@ -90,7 +94,12 @@ void ACollider::MoveForward(float axisValue)
 {
 	FVector forwardActorVector = GetActorForwardVector();
 
-	AddMovementInput(axisValue * forwardActorVector);
+	if (mainMovementComponent)
+	{
+		mainMovementComponent-> AddInputVector(axisValue * forwardActorVector);
+	}
+
+	// AddMovementInput(axisValue * forwardActorVector);
 
 }
 
@@ -98,7 +107,21 @@ void ACollider::MoveRight(float axisValue)
 {
 	FVector rightActorVector = GetActorRightVector();
 
-	AddMovementInput(axisValue * rightActorVector);
+	if (mainMovementComponent)
+	{
+		mainMovementComponent->AddInputVector(axisValue * rightActorVector);
+	}
+
+
+	// AddMovementInput(axisValue * rightActorVector);
+}
+
+
+// Body override function from Pawn
+UPawnMovementComponent* ACollider::GetMovementComponent() const
+{
+	return mainMovementComponent;
+
 }
 
 
