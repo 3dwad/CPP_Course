@@ -2,7 +2,7 @@
 
 
 #include "Critter.h"
-#include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 
@@ -14,14 +14,14 @@ ACritter::ACritter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	MainMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	MainCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	MainSkelMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
+	// MainCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	
-	MainMesh->SetupAttachment(GetRootComponent());
-	MainCamera->SetupAttachment(GetRootComponent());
+	MainSkelMesh->SetupAttachment(GetRootComponent());
+	// MainCamera->SetupAttachment(GetRootComponent());
 
-	MainCamera->SetRelativeLocation(FVector(-300.f, 0.f, 0.f));
-	MainCamera->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
+	// MainCamera->SetRelativeLocation(FVector(-300.f, 0.f, 0.f));
+	// MainCamera->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
 
 	currentVelocity = FVector(0.f);
 	maxSpeeed = 100.f;

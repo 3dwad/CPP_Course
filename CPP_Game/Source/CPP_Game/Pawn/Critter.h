@@ -16,10 +16,12 @@ public:
 	ACritter();
 
 	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* MainMesh;
+	class USkeletalMeshComponent* MainSkelMesh;
 	UPROPERTY(EditAnywhere)
+	/* 
 	class UCameraComponent* MainCamera;
 	UPROPERTY(EditAnywhere, Category = "PawnMovement")
+	*/
 	float maxSpeeed;
 	
 
