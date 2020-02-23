@@ -26,6 +26,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+	FVector2D mainCamInput = FVector2D(0.f);
+
 	// Declaration Static Mesh component
 	UPROPERTY(VisibleAnywhere, Category = "Mesh")
 	class UStaticMeshComponent* meshComponent;
@@ -52,6 +56,8 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	class USpringArmComponent* mainSpringArm;
 
+	
+
 
 	// Getters and Setters
 	
@@ -66,12 +72,16 @@ public:
 	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return mainSpringArm; }
 	FORCEINLINE void SetSpringArmComponent(USpringArmComponent* springArm) { mainSpringArm = springArm; }
 
+
 	// Prototype override function from pawn
 	virtual UPawnMovementComponent* GetMovementComponent() const override;
 
 private:
 	void MoveForward(float axisValue);
 	void MoveRight(float axisValue);
+	void CameraPitch(float axisValue);
+	void CameraYaw(float axisValue);
+
 
 	
 };

@@ -20,6 +20,8 @@ ACollider::ACollider()
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
+	// FVector2D mainCamInput = FVector2D();
+
 	sphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
 	sphereComponent->SetupAttachment(GetRootComponent());
 
@@ -44,6 +46,9 @@ ACollider::ACollider()
 	
 	mainCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	mainCamera->SetupAttachment(mainSpringArm, USpringArmComponent::SocketName);
+
+
+	
 	
 	
 
@@ -74,6 +79,23 @@ void ACollider::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FRotator newRotation = GetActorRotation();
+
+	newRotation.Yaw += mainCamInput.X;
+	
+	SetActorRotation(newRotation);
+
+
+	FRotator newSpringArmRotation = mainSpringArm->GetComponentRotation();
+
+	newSpringArmRotation.Pitch = FMath::Clamp(newSpringArmRotation.Pitch += mainCamInput.Y, -60.f, -15.f);
+
+	mainSpringArm->SetWorldRotation(newSpringArmRotation);
+
+
+
+
+
 }
 
 // Called to bind functionality to input
@@ -85,6 +107,9 @@ void ACollider::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ACollider::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ACollider::MoveRight);
+
+	PlayerInputComponent->BindAxis(TEXT("CameraPitch"), this, &ACollider::CameraPitch);
+	PlayerInputComponent->BindAxis(TEXT("CameraYaw"), this, &ACollider::CameraYaw);
 
 }
 
@@ -115,6 +140,24 @@ void ACollider::MoveRight(float axisValue)
 
 	// AddMovementInput(axisValue * rightActorVector);
 }
+
+// Camera Pitch 
+
+void ACollider::CameraPitch(float axisValue)
+{
+	mainCamInput.Y = axisValue;
+
+
+}
+
+void ACollider::CameraYaw(float axisValue)
+{
+
+	mainCamInput.X = axisValue;
+
+
+}
+
 
 
 // Body override function from Pawn
