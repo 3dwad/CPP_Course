@@ -1,9 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
-#include "NinjaCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "NinjaCharacter.h"
 
 // Sets default values
 ANinjaCharacter::ANinjaCharacter()
@@ -21,8 +20,9 @@ ANinjaCharacter::ANinjaCharacter()
 	mainCamera->SetupAttachment(mainCameraBoom, USpringArmComponent::SocketName);
 	mainCamera->bUsePawnControlRotation = false;	
 
-
-	
+	// Set our turn rates for input
+	baseTurnRate = 65.f;
+	baseLookUpRate = 65.f;
 
 
 
@@ -33,8 +33,6 @@ void ANinjaCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-
-	
 }
 
 // Called every frame
@@ -50,4 +48,38 @@ void ANinjaCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+void ANinjaCharacter::CharacterMoveRight(float axisValue)
+{
+	if ((GetController() != nullptr) && (axisValue != 0.f))
+	{
+
+		// Find out which way is forward
+		const FRotator controllerRotation = GetController()->GetControlRotation();
+		const FRotator yawRotation(0.f, controllerRotation.Yaw, 0.f);
+
+		// Get Y direction in local space
+		const FVector direction = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y);
+		AddMovementInput(direction, axisValue);
+
+	}
+}
+
+
+void ANinjaCharacter::CharacterMoveForward(float axisValue)
+{
+	if ((GetController() != nullptr) && (axisValue != 0.f))
+	{
+
+		// Find out which way is forward
+		const FRotator controllerRotation = GetController()->GetControlRotation();
+		const FRotator yawRotation(0.f, controllerRotation.Yaw, 0.f);
+
+		// Get X direction in local space
+		const FVector direction = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X);
+		AddMovementInput(direction, axisValue);
+	}
+}
+
+
 

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/Controller.h"
 #include "NinjaCharacter.generated.h"
 
 UCLASS()
@@ -23,6 +24,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPricateAcces = "true"))
 	class UCameraComponent* mainCamera;
 
+	// Base turn rate to scale turning functions for the camera
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category = Camera)
+	float baseTurnRate;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	float baseLookUpRate;
+
+	
+
+
 
 
 protected:
@@ -35,5 +45,16 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+
+	// Called for forward/backward input
+	void CharacterMoveForward(float axisValue);
+
+	// Called for right/left input
+	void CharacterMoveRight(float axisValue);
+
+	// Called via input to turn at a given rate
+	void TurnAtRate(float rate)
+
 
 };
