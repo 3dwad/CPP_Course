@@ -1,8 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "NinjaCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "NinjaCharacter.h"
+#include "Engine/World.h"
+#include "Components/InputComponent.h"
+
 
 // Sets default values
 ANinjaCharacter::ANinjaCharacter()
@@ -47,6 +50,24 @@ void ANinjaCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	check(PlayerInputComponent);	// Check on valid. Stop all logic bellow if not valid
+
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ANinjaCharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ANinjaCharacter::StopJumping);
+
+
+	// Inputs for Move
+	PlayerInputComponent->BindAxis("MoveForward", this, &ANinjaCharacter::CharacterMoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ANinjaCharacter::CharacterMoveRight);
+
+	// Inputs for mouse rotation
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerPitchInput);
+
+	// Inputs for keyboard rotation
+	PlayerInputComponent->BindAxis("TurnRate", this, &ANinjaCharacter::TurnAtRate);
+	PlayerInputComponent->BindAxis("LookUpRate", this, &ANinjaCharacter::LookUpRate);
+
 }
 
 void ANinjaCharacter::CharacterMoveRight(float axisValue)
@@ -82,4 +103,15 @@ void ANinjaCharacter::CharacterMoveForward(float axisValue)
 }
 
 
+void ANinjaCharacter::TurnAtRate(float rate)
+{
 
+	AddControllerYawInput(rate * baseTurnRate * GetWorld()->GetDeltaSeconds());
+
+}
+
+void ANinjaCharacter::LookUpRate(float rate)
+{
+	AddControllerPitchInput(rate * baseLookUpRate * GetWorld()->GetDeltaSeconds());
+
+}

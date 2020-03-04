@@ -53,8 +53,18 @@ public:
 	// Called for right/left input
 	void CharacterMoveRight(float axisValue);
 
-	// Called via input to turn at a given rate
-	void TurnAtRate(float rate)
+	/** Called via input to turn at a given rate
+	* @param rate this is normalized rate, i.e 1.0 means 100% of desired turn rate
+	*/
+	void TurnAtRate(float rate);
 
+		/** Called via input to look up/down at a given rate
+		* @param rate this is normalized rate, i.e 1.0 means 100% of desired look up/down rate
+		*/
+	void LookUpRate(float rate);
+
+	// Getters for Camera and SpringArm
+	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return mainCameraBoom; }
+	FORCEINLINE class UCameraComponent* GetMainCamera() const { return mainCamera; }
 
 };
