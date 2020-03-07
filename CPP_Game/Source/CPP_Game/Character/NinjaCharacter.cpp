@@ -5,6 +5,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Engine/World.h"
 #include "Components/InputComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 // Sets default values
@@ -13,22 +15,39 @@ ANinjaCharacter::ANinjaCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	
 	// Create SpringArm
 	mainCameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("MainCameraBoom"));
 	mainCameraBoom->TargetArmLength = 600.f;
 	mainCameraBoom->bUsePawnControlRotation = true;	// Rotate arm based on controller
+	mainCameraBoom->SetupAttachment(GetRootComponent());	// Attach camera boom to root component
 
 	// Create Camera
 	mainCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("MainCamera"));
 	mainCamera->SetupAttachment(mainCameraBoom, USpringArmComponent::SocketName);
 	mainCamera->bUsePawnControlRotation = false;	
 
+	// Set initialized size of capsule component. Also can use SetCapsuleSize function
+	GetCapsuleComponent()->InitCapsuleSize(34.f, 88.f);	
+	
+
+
+
 	// Set our turn rates for input
 	baseTurnRate = 65.f;
 	baseLookUpRate = 65.f;
 
+	// Disable rotation character follow controller
+	// Only CameraBoom rotate follow controller
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
 
-
+	// Enable character rotation to movement direction
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);	// Set value of Yaw rotation
+	GetCharacterMovement()->JumpZVelocity = 650.f;	// Max Jump height
+	GetCharacterMovement()->AirControl = 0.2f;	// In air control
 }
 
 // Called when the game starts or when spawned
@@ -62,7 +81,7 @@ void ANinjaCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	// Inputs for mouse rotation
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	// Inputs for keyboard rotation
 	PlayerInputComponent->BindAxis("TurnRate", this, &ANinjaCharacter::TurnAtRate);
