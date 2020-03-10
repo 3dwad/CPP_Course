@@ -2,12 +2,30 @@
 
 
 #include "FloorSwitch.h"
+#include "Components/BoxComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 AFloorSwitch::AFloorSwitch()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+
+
+	TriggerBox = CreateAbstractDefaultSubobject<UBoxComponent>(TEXT("TriggerBox"));
+	TriggerBox->SetupAttachment(RootComponent);
+
+	TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &AFloorSwitch::OnOverlapBegin);
+
+	FloorSwitch = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FloorSwitch"));
+	FloorSwitch->SetupAttachment(GetRootComponent());
+
+	Door = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door"));
+	Door->SetupAttachment(GetRootComponent());
+
+
+
 
 }
 
@@ -16,6 +34,7 @@ void AFloorSwitch::BeginPlay()
 {
 	Super::BeginPlay();
 	
+
 }
 
 // Called every frame

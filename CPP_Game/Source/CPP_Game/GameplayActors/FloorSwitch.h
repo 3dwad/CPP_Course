@@ -15,6 +15,19 @@ public:
 	// Sets default values for this actor's properties
 	AFloorSwitch();
 
+	// Trigger volume for the function 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = FloorSwitch)
+	class UBoxComponent* TriggerBox;
+
+	// Switch for the character to step
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = FloorSwitch)
+	class UStaticMeshComponent* FloorSwitch;
+
+	// Door to move when the floor switch was pressed
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = FloorSwitch)
+	UStaticMeshComponent* Door;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -22,5 +35,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION()
+	void OnOverlapBegin();
 
 };
