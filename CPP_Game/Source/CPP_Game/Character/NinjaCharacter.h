@@ -67,4 +67,8 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return mainCameraBoom; }
 	FORCEINLINE class UCameraComponent* GetMainCamera() const { return mainCamera; }
 
+
+	
+
+
 };
