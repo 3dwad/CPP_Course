@@ -1,0 +1,15 @@
+Много времени провёл работая с Animation Blueprint научился грамотно собирать структуру, хорошо освоил работу с:
+- Retarget
+- Additive animations
+- Animation curves
+- Animation notify
+- Animation layers!
+- State machines
+- Blend space и aim offset
+- Sync group
+- Skeletal control
+- Speed & Orientation Warping
+- Virtual Bones
+- Morph target
+- Animations montages и animations slots
+- Всевозможные blend by
