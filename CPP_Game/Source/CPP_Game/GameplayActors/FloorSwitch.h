@@ -28,6 +28,15 @@ public:
 	UStaticMeshComponent* Door;
 
 
+	// Initial location for the door
+	UPROPERTY(BlueprintReadWrite,Category = FloorSwitch)
+	FVector initialDoorLocation;
+
+	// Initial location for door switch
+	UPROPERTY(BlueprintReadWrite, Category = FloorSwitch)
+	FVector initialSwitchLocation;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -37,6 +46,27 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-	void OnOverlapBegin();
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = FloorSwitch)	// BlueprintImplementableEvent that mean we can define this function into blueprints
+	void RaiseDoor();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = FloorSwitch)	
+	void LowerDoor();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = FloorSwitch)	
+	void RaiseFloorSwitch();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = FloorSwitch)	
+	void LowerFloorSwitch();
+
+	UFUNCTION(BlueprintCallable, Category = FloorSwitch)
+	void UpdateDoorLocation(float Z);
+
 
 };
+
+
