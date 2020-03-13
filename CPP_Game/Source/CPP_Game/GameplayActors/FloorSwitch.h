@@ -26,8 +26,7 @@ public:
 	// Door to move when the floor switch was pressed
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = FloorSwitch)
 	UStaticMeshComponent* Door;
-
-
+	
 	// Initial location for the door
 	UPROPERTY(BlueprintReadWrite,Category = FloorSwitch)
 	FVector initialDoorLocation;
@@ -36,7 +35,16 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = FloorSwitch)
 	FVector initialSwitchLocation;
 
+	
+	FTimerHandle switchHandle;
 
+	UPROPERTY(BlueprintReadWrite, Category = FloorSwitch)
+	float switchTimerDelay;
+
+	UPROPERTY(BlueprintReadWrite, Category = FloorSwitch)
+	bool bCharacterOnSwitch;
+
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -66,7 +74,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = FloorSwitch)
 	void UpdateDoorLocation(float Z);
 
+	UFUNCTION(BlueprintCallable, Category = FloorSwitch)
+	void UpdateFloorSwitchLocation(float Z);
 
+	UFUNCTION(BlueprintCallable, Category = FloorSwitch)
+	void CloseDoor();
 };
 
 

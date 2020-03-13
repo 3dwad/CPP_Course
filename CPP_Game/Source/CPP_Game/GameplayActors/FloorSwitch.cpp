@@ -4,6 +4,7 @@
 #include "FloorSwitch.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "TimerManager.h"
 
 // Sets default values
 AFloorSwitch::AFloorSwitch()
@@ -19,7 +20,6 @@ AFloorSwitch::AFloorSwitch()
 	
 	// Below i set collision channel for trigger box, set response ignore all channels, and then turn on overlap events with pawn. Also set box extend.
 	
-
 	TriggerBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);	
 	TriggerBox->SetCollisionObjectType(ECollisionChannel::ECC_WorldStatic);
 	TriggerBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
@@ -32,7 +32,8 @@ AFloorSwitch::AFloorSwitch()
 	Door = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door"));
 	Door->SetupAttachment(GetRootComponent());
 
-  
+	switchTimerDelay = 2.f;
+	bCharacterOnSwitch = false;
 }
 
 // Called when the game starts or when spawned
@@ -61,9 +62,10 @@ void AFloorSwitch::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAct
 
 	UE_LOG(LogTemp, Warning, TEXT("Overlap Begin."));
 
+	if (!bCharacterOnSwitch) bCharacterOnSwitch = true;
 	RaiseDoor();
 	LowerFloorSwitch();
-
+	
 }
 
 
@@ -72,16 +74,47 @@ void AFloorSwitch::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor
 
 	UE_LOG(LogTemp, Warning, TEXT("Overlap End."));
 
-	LowerDoor();
-	RaiseFloorSwitch();
+	
+	bCharacterOnSwitch = false;
+
+	//	Equal SetTimerByFunction in blueprints
+	GetWorldTimerManager().SetTimer(switchHandle, this, &AFloorSwitch::CloseDoor, switchTimerDelay);
+		
 }
 
 void AFloorSwitch::UpdateDoorLocation(float Z)
 {
+	FVector L_newLocation = initialDoorLocation;
+	L_newLocation.Z += Z;
 
-	Door->SetWorldLocation(FVector(initialDoorLocation.X, initialDoorLocation.Y, Z));
+	Door->SetWorldLocation(L_newLocation);
 
 }
+
+void AFloorSwitch::UpdateFloorSwitchLocation(float Z)
+{
+	FVector L_newLocation = initialSwitchLocation;
+	L_newLocation.Z += Z;
+
+	FloorSwitch->SetWorldLocation(L_newLocation);
+
+}
+
+void AFloorSwitch::CloseDoor()
+{
+	
+
+	if (!bCharacterOnSwitch)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CloseDoor Called"));
+		LowerDoor();
+		RaiseFloorSwitch();
+
+	}
+	
+
+}
+
 
 
 
