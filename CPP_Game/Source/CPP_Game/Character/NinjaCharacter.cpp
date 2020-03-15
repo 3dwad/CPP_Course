@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Engine/World.h"
+#include "Engine/Engine.h"
 #include "Components/InputComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -48,12 +49,35 @@ ANinjaCharacter::ANinjaCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);	// Set value of Yaw rotation
 	GetCharacterMovement()->JumpZVelocity = 650.f;	// Max Jump height
 	GetCharacterMovement()->AirControl = 0.2f;	// In air control
+
+
+	/*
+	/*
+	/*	Player Stats
+	/*
+	*/
+
+	// Set defaults player stats
+	maxHealth = 100.f;
+	health = 65.f;
+	maxStamina = 100.f;	
+	stamina = 85.f;
+	coin = 0;
+	
 }
 
 // Called when the game starts or when spawned
 void ANinjaCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	// Debug on Begin Play
+	FString L_allStats = "Max health: " + FString::SanitizeFloat(maxHealth) +
+		"\nHealth: " + FString::SanitizeFloat(health) +
+		"\nMax Stamina: " + FString::SanitizeFloat(maxStamina) +
+		"\nStamina: " + FString::SanitizeFloat(stamina) +
+		"\nCoins: " + FString::FromInt(coin);
+	GEngine->AddOnScreenDebugMessage(1, 6.f, FColor::Green, L_allStats);
 
 }
 

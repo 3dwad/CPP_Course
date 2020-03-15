@@ -15,20 +15,26 @@ public:
 	// Sets default values for this actor's properties
 	AItem();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Collision")
 	class USphereComponent* CollisionVolume;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Mesh")
 	class UStaticMeshComponent* Mesh;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Particles")
 	class UParticleSystemComponent* IdleParticle;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Particles")
 	class UParticleSystem* OnOverlapParticle;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sounds")
 	class USoundCue* Sound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotating")
+	bool bRotate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotating")
+	float rotationRate;
 
 
 protected:
@@ -45,4 +51,9 @@ public:
 	UFUNCTION()
 	virtual void OnItemOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	UFUNCTION(Category = "Rotating")
+	void Rotator(float DeltaTime);
 };
+
+
+

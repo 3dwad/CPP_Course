@@ -7,7 +7,11 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
+#include "Engine/Engine.h"
 #include "Sound/SoundCue.h"
+#include "DrawDebugHelpers.h"
+#include "CPP_Game/CPP_Game.h"
+
 
 
 // Sets default values
@@ -26,6 +30,8 @@ AItem::AItem()
 	IdleParticle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("IdleParticle"));
 	IdleParticle->SetupAttachment(GetRootComponent());
 	
+	bRotate = false;
+	rotationRate = 0.25f;
 
 }
 
@@ -38,7 +44,7 @@ void AItem::BeginPlay()
 	CollisionVolume->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnItemOverlapBegin);
 	CollisionVolume->OnComponentEndOverlap.AddDynamic(this, &AItem::OnItemOverlapEnd);
 
-
+	
 	
 }
 
@@ -47,11 +53,16 @@ void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	Rotator(DeltaTime);
+
 }
 
 void AItem::OnItemOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Super::OverlapBegin"));
+
+	//	 Debug string right into world
+	DrawDebugString(GetWorld(),GetActorLocation(),"Overlap!",nullptr,FColor::Red,2.f);
 
 	if (OnOverlapParticle)
 	{
@@ -69,6 +80,28 @@ void AItem::OnItemOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor*
 void AItem::OnItemOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Super::OverlapEnd"));
+
+
+}
+
+void AItem::Rotator(float DeltaTime)
+{
+	if (bRotate)
+	{
+		FRotator L_Rotate = GetActorRotation();
+
+		L_Rotate.Yaw += (rotationRate*DeltaTime);
+		SetActorRotation(L_Rotate);
+
+		// Debug via AddOnScreenMessage
+		/*FString L_DebugMSG = L_Rotate.ToString();
+		GEngine->AddOnScreenDebugMessage(1, 0.f, FColor::Green, L_DebugMSG);
+
+		//	Debug via UE_Log, also use custom MyLog category
+		// UE_LOG(MyLog, Warning, TEXT("L_Rotate = %s"), *L_DebugMSG);
+		*/
+		
+	}
 
 
 }

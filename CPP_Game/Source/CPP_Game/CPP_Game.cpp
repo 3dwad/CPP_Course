@@ -4,3 +4,6 @@
 #include "Modules/ModuleManager.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, CPP_Game, "CPP_Game" );
+
+//	Define New Log Category
+DEFINE_LOG_CATEGORY(MyLog);

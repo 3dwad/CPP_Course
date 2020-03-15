@@ -30,7 +30,27 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float baseLookUpRate;
 
-	
+
+	/*
+	/*
+	/*
+	/*Player Stats
+
+	*/
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category ="Player Stats")
+	float maxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	float health;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Player Stats")
+	float maxStamina;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	float stamina;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	int32 coin;
 
 
 

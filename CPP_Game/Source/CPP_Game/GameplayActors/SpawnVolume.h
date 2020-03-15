@@ -35,7 +35,8 @@ public:
 	UFUNCTION(BlueprintPure, Category = Spawning)
 	FVector GetSpawnPoint();
 
-	//	BlueprintNativeEvent its mean this function we can definition in blueprints, also we can call this function with logic from c++
+	//	BlueprintNativeEvent its mean this function we can definition in blueprints, if we not definition in blueprint, will be work logic from _Implementation function.
+	//	Also we can call _Implementation function from blueprints via "Call from parent"
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = Spawning)
 	void SpawnOurPawn(UClass* classForSpawn, const FVector& location);
 
